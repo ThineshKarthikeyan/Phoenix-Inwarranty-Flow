@@ -14,7 +14,7 @@ jobs:
 
     steps:
       -name: Checkout the code
-       uses: actions/checkout@v6-beta
+       uses: actions/checkout@v6
 
       -name: Install Nodejs and npm
        uses: actions/setup-node@v6.0.0
@@ -31,4 +31,10 @@ jobs:
             newman run 'Inwarranty-flow Collection Copy.postman_collection.json' \
             -e QA.postman_environment.json \
             -r cli,htmlextra
+
+       -name: Newman Report
+       uses: actions/upload-artifact@v4.6.2
+       with:
+         name: Newman Report
+         path: newman/*.html
        
