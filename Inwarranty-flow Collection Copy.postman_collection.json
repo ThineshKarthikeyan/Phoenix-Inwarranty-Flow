@@ -1,0 +1,4120 @@
+{
+	"info": {
+		"_postman_id": "da377634-00fc-49bc-8c8b-827233041a8d",
+		"name": "Inwarranty-flow Collection Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28648763",
+		"_collection_link": "https://cloudy-escape-929147.postman.co/workspace/SDET-with-Thinesh~e73f40c0-4927-4b3f-ac1a-fab1cc9c4250/collection/28648763-da377634-00fc-49bc-8c8b-827233041a8d?action=share&source=collection_link&creator=28648763"
+	},
+	"item": [
+		{
+			"name": "LoginAPIRequestForFrontDesk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Post-request\")\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"fdToken\", responseBody.data.token);\r",
+							"\r",
+							"const jsonSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"token\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"token\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify if the status is 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the response time is less than 100ms\", function() {\r",
+							"    //chai js assertion library in JS (TDD and BDD)\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if message is equal to success\", function() {\r",
+							"    pm.expect(responseBody.message).to.be.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify JSON schema\", function() {\r",
+							"    pm.response.to.have.jsonSchema(jsonSchema)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Token should be Valid\", function() {\r",
+							"    let token = pm.response.json().data.token\r",
+							"    pm.expect(token.split(\".\")).to.have.length(3)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre-request\")"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"iamfd\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserDetailsAPIRequestForFrontDesk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"first_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"last_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"login_id\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"mobile_number\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"email_id\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"password\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"reset_password_date\": {\r",
+							"          \"type\": \"null\"\r",
+							"        },\r",
+							"        \"lock_status\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"is_active\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"mst_role_id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"mst_service_location_id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"created_at\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"modified_at\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"role_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"service_location\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"first_name\",\r",
+							"        \"last_name\",\r",
+							"        \"login_id\",\r",
+							"        \"mobile_number\",\r",
+							"        \"email_id\",\r",
+							"        \"password\",\r",
+							"        \"reset_password_date\",\r",
+							"        \"lock_status\",\r",
+							"        \"is_active\",\r",
+							"        \"mst_role_id\",\r",
+							"        \"mst_service_location_id\",\r",
+							"        \"created_at\",\r",
+							"        \"modified_at\",\r",
+							"        \"role_name\",\r",
+							"        \"service_location\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Verify the status code should be 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify the JSON schema\", function() {\r",
+							"    pm.response.to.have.jsonSchema(jsonSchema);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify the properties are present\", function() {\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"id\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"first_name\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"last_name\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"login_id\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"mobile_number\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"email_id\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"reset_password_date\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"lock_status\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"is_active\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"mst_role_id\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"mst_service_location_id\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"created_at\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"modified_at\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"role_name\");\r",
+							"    pm.expect(pm.response.json().data).to.have.property(\"service_location\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/userdetails",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/userdetails' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1b6-cR2dclq1S8zJDBAsHCDA10lTBi4\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForFrontDesk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        },\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        },\r",
+							"        {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"label\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"key\": {\r",
+							"              \"type\": \"string\"\r",
+							"            },\r",
+							"            \"count\": {\r",
+							"              \"type\": \"integer\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"label\",\r",
+							"            \"key\",\r",
+							"            \"count\"\r",
+							"          ]\r",
+							"        }\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status should be 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"    // let responseStatus = pm.response.status\r",
+							"    // pm.expect(responseStatus).to.be.eql(\"OK\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify the response time should be less that 150 ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(150)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the message is equal to success\", function() {\r",
+							"    pm.expect(pm.response.json().message).to.be.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify the response schema\", function() {\r",
+							"    pm.response.to.have.jsonSchema(responseSchema)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"If length of the array is 3\", function() {\r",
+							"    pm.expect(pm.response.json().data).to.have.length(3)\r",
+							"})\r",
+							"\r",
+							"var expectedKeys = [\"pending_for_delivery\", \"created_today\", \"pending_fst_assignment\"]\r",
+							"\r",
+							"var jsonData = pm.response.json()\r",
+							"var data = jsonData.data\r",
+							"\r",
+							"pm.test(\"Verify if the keys are present in the response data array\", function() {\r",
+							"    var actualValues = data.map(function(item) {\r",
+							"        return item.key\r",
+							"    })\r",
+							"    pm.expect(actualValues).to.be.members(expectedKeys)\r",
+							"})\r",
+							"\r",
+							"var data = pm.response.json().data\r",
+							"console.log(data.length)\r",
+							"\r",
+							"for(var index = 0; index < data.length; index++) {\r",
+							"pm.test(\"Verify if the count of the json object \" + (data[index].label)+ \" is number or not\", function() {\r",
+							"        let count = pm.response.json().data[index].count\r",
+							"        pm.expect(typeof(count)).to.be.eql(\"number\")    \r",
+							"    })\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-gScWGbDNprcNEyK+JPUVxA/cU4M\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForFrontDesk Negative Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the status code should be 401\", function() {\r",
+							"    pm.response.to.have.status(401)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-gScWGbDNprcNEyK+JPUVxA/cU4M\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForFrontDesk Negative Test Invalid Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the invalid token status code should be 403\", function() {\r",
+							"    pm.response.to.have.status(403)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Thinesh"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-gScWGbDNprcNEyK+JPUVxA/cU4M\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "MasterAPIRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"mst_oem\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_model\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_product_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_product_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_product_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_product_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_product_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_product_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_action_status\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_warrenty_status\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_platform\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_product\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_oem_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_oem_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_oem_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_oem_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mst_oem_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mst_oem_id\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_role\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"description\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"description\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_service_location\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mobile_number\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"email_id\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"address\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"country\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"gstin\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_repair_line_engineer\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mobile_number\",\r",
+							"                \"email_id\",\r",
+							"                \"address\",\r",
+							"                \"pincode\",\r",
+							"                \"country\",\r",
+							"                \"gstin\",\r",
+							"                \"is_repair_line_engineer\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mobile_number\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"email_id\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"address\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"country\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"gstin\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_repair_line_engineer\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mobile_number\",\r",
+							"                \"email_id\",\r",
+							"                \"address\",\r",
+							"                \"pincode\",\r",
+							"                \"country\",\r",
+							"                \"gstin\",\r",
+							"                \"is_repair_line_engineer\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"code\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"mobile_number\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"email_id\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"address\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"country\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"gstin\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"is_repair_line_engineer\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"is_active\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"code\",\r",
+							"                \"mobile_number\",\r",
+							"                \"email_id\",\r",
+							"                \"address\",\r",
+							"                \"pincode\",\r",
+							"                \"country\",\r",
+							"                \"gstin\",\r",
+							"                \"is_repair_line_engineer\",\r",
+							"                \"is_active\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"mst_problem\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"created_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                },\r",
+							"                \"modified_at\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"id\",\r",
+							"                \"name\",\r",
+							"                \"created_at\",\r",
+							"                \"modified_at\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        },\r",
+							"        \"map_fst_pincode\": {\r",
+							"          \"type\": \"array\",\r",
+							"          \"items\": [\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            },\r",
+							"            {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"pincode\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_id\": {\r",
+							"                  \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"mst_service_location_name\": {\r",
+							"                  \"type\": \"string\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"pincode\",\r",
+							"                \"mst_service_location_id\",\r",
+							"                \"mst_service_location_name\"\r",
+							"              ]\r",
+							"            }\r",
+							"          ]\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"mst_oem\",\r",
+							"        \"mst_model\",\r",
+							"        \"mst_action_status\",\r",
+							"        \"mst_warrenty_status\",\r",
+							"        \"mst_platform\",\r",
+							"        \"mst_product\",\r",
+							"        \"mst_role\",\r",
+							"        \"mst_service_location\",\r",
+							"        \"mst_problem\",\r",
+							"        \"map_fst_pincode\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"message\",\r",
+							"    \"data\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Verify if the status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the message is equal to success\", function() {\r",
+							"    pm.expect(pm.response.json().message).to.be.eql(\"Success\")\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify if the mst_oem is present in the response or not\", function() {\r",
+							"    let jsonData = pm.response.json().data\r",
+							"    pm.expect(jsonData).to.have.property(\"mst_oem\");\r",
+							"    pm.expect(jsonData.mst_oem[0]).to.have.property(\"id\");\r",
+							"})\r",
+							"\r",
+							"    \r",
+							"\r",
+							"const expectedKeys = [\"mst_oem\", \"mst_model\", \"mst_action_status\", \"mst_warrenty_status\", \"mst_platform\", \"mst_product\", \"mst_role\", \"mst_service_location\", \"mst_problem\", \"map_fst_pincode\"]\r",
+							"\r",
+							"\r",
+							"expectedKeys.forEach(function(item) {\r",
+							"    pm.test(\"Verify if the master key \" + expectedKeys[item] + \" are present\", function() {\r",
+							"        let jsonData = pm.response.json().data\r",
+							"        pm.expect(jsonData).to.have.property(item);\r",
+							"    })\r",
+							"\r",
+							"    \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the master keys non empty array\", function() {\r",
+							"    let jsonData = pm.response.json()\r",
+							"\r",
+							"    expectedKeys.forEach(function(item) {\r",
+							"        pm.expect(Array.isArray(jsonData.data[item])).to.be.true\r",
+							"        pm.expect(jsonData.data[item].length).to.be.greaterThan(0)\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify if the response schema is as expected\", function() {\r",
+							"    pm.response.to.have.jsonSchema(jsonSchema)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify if the response time is less than 200 ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/master",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"master"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/master' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "MasterAPIRequest Negative Case",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if the status code is 401\", function() {\r",
+							"    pm.response.to.have.status(401)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/master",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"master"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/master' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "MasterAPIRequest Negative Case Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if the status code is 403\", function() {\r",
+							"    pm.response.to.have.status(403)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Thiensh",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/master",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"master"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/master' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateJobAPIRequestForFrontDesk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"jobId\", responseBody.data.id);\r",
+							"pm.collectionVariables.set(\"jobNumber\", responseBody.data.job_number);\r",
+							"console.log(responseBody.data.id)\r",
+							"console.log(responseBody.data.job_number)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random = Math.random();\r",
+							"var imeiNumber = Math.floor(random * 100000000000000 + 100000000000000)\r",
+							"pm.variables.set(\"imeiNumber\", imeiNumber)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mst_service_location_id\": 0,\r\n    \"mst_platform_id\": 2,\r\n    \"mst_warrenty_status_id\": 1,\r\n    \"mst_oem_id\": 1,\r\n    \"customer\": {\r\n        \"first_name\": \"Thinesh\",\r\n        \"last_name\": \"Kumaar\",\r\n        \"mobile_number\": \"6547895111\",\r\n        \"mobile_number_alt\": \"6549873215\",\r\n        \"email_id\": \"Kumaar@gmail.com\",\r\n        \"email_id_alt\": \"ab@gmail.com\"\r\n    },\r\n    \"customer_address\": {\r\n        \"flat_number\": \"20\",\r\n        \"apartment_name\": \"Name Apt\",\r\n        \"street_name\": \"Name st\",\r\n        \"landmark\": \"Kannur\",\r\n        \"area\": \"Chennai\",\r\n        \"pincode\": \"6200008\",\r\n        \"country\": \"India\",\r\n        \"state\": \"Tamil Nadu\"\r\n    },\r\n    \"customer_product\": {\r\n        \"dop\": \"2025-09-30T18:30:00.000Z\",\r\n        \"serial_number\": \"{{imeiNumber}}\",\r\n        \"imei1\": \"{{imeiNumber}}\",\r\n        \"imei2\": \"{{imeiNumber}}\",\r\n        \"popurl\": \"2025-09-30T18:30:00.000Z\",\r\n        \"product_id\": 1,\r\n        \"mst_model_id\": 1\r\n    },\r\n    \"problems\": [\r\n        {\r\n            \"id\": 1,\r\n            \"remark\": \"Phone not working\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/job/create",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"create"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/create' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"mst_service_location_id\":0,\"mst_platform_id\":2,\"mst_warrenty_status_id\":1,\"mst_oem_id\":1,\"customer\":{\"first_name\":\"Mary\",\"last_name\":\"Kom\",\"mobile_number\":\"1236549898\",\"mobile_number_alt\":\"6549873215\",\"email_id\":\"tt@gmail.com\",\"email_id_alt\":\"ab@gmail.com\"},\"customer_address\":{\"flat_number\":\"20\",\"apartment_name\":\"Name Apt\",\"street_name\":\"Name st\",\"landmark\":\"Kannur\",\"area\":\"Chennai\",\"pincode\":\"6200008\",\"country\":\"India\",\"state\":\"Tamil Nadu\"},\"customer_product\":{\"dop\":\"2025-09-30T18:30:00.000Z\",\"serial_number\":\"32154653213565346\",\"imei1\":\"32154653213565346\",\"imei2\":\"32154653213565346\",\"popurl\":\"2025-09-30T18:30:00.000Z\",\"product_id\":1,\"mst_model_id\":1},\"problems\":[{\"id\":1,\"remark\":\"Phone not working\"}]}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-3+3PcCTYnFSuTvQNClPt6vUKBZg\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "DetailsAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"created_today\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"created_today\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "SearchJobAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"searchText\":\"{{jobNumber}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/job/search",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"search"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/search' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"searchText\":\"JOB_90897\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "JobDetailsAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/details/{{jobNumber}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"details",
+						"{{jobNumber}}"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/details/JOB_90730' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODAwMTN9.8u0_RzuBJUEuMk06ae9yK49P2-s90c_4o6xmKEXj8vQ' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAPIRequestForSupervisor",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre-request got executed\")"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Post-request\")\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"supToken\", responseBody.data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"iamsup\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UerdetailsAPIRequestForSupervisor",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/userdetails",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/userdetails' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1b6-cR2dclq1S8zJDBAsHCDA10lTBi4\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForSupervisor",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-AZrvba9ZhKA1TwLVqT8NB2oGX7E\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "PendingForAssignmentAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/pending",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"pending"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/pending' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "EngineerMappedToCenterAPIRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseBody = pm.response.json();\r",
+							"\r",
+							"var engId = responseBody.data[0].id;\r",
+							"pm.collectionVariables.set(\"engId\", engId)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/engineer/mapped",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"engineer",
+						"mapped"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/engineer/mapped' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "AssignJobToEngineerAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"job_id\": {{jobId}},\r\n    \"engineer_id\": {{engId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/engineer/assign",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"engineer",
+						"assign"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/engineer/assign' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"job_id\":90897,\"engineer_id\":2}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "PendingForAssignmentAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{supToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/pending",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"pending"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/pending' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkpvaG4iLCJsYXN0X25hbWUiOiJDZW5hIiwibG9naW5faWQiOiJpYW1zdXAiLCJtb2JpbGVfbnVtYmVyIjoiOTk4ODc3ODg5OSIsImVtYWlsX2lkIjoiam9obkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjVmNGRjYzNiNWFhNzY1ZDYxZDgzMjdkZWI4ODJjZjk5IiwicmVzZXRfcGFzc3dvcmRfZGF0ZSI6bnVsbCwibG9ja19zdGF0dXMiOjAsImlzX2FjdGl2ZSI6MSwibXN0X3JvbGVfaWQiOjIsIm1zdF9zZXJ2aWNlX2xvY2F0aW9uX2lkIjoxLCJjcmVhdGVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwibW9kaWZpZWRfYXQiOiIyMDIxLTEyLTIwVDA3OjQyOjAwLjAwMFoiLCJyb2xlX25hbWUiOiJTdXBlcnZpc29yIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODA0NzF9.iTRK8WS-Mpj31kXnHo9XrBSKeIR5dg50fMCQmhhXF9U' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1a73ab-keJI30CNa6+i2ehDFBvtxdw1Vjg\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAPIRequestForEngineer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre-request got executed\")"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Post-request\")\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"engToken\", responseBody.data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"iameng\",\"password\":\"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/login' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"username\":\"iameng\",\"password\":\"password\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "UserDetailsAPIRequestForEngineer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/userdetails",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/userdetails' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1bc-5jtJRsd0hZILh8Na44eS7Os72ts\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForEngineer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"fa-mAKkt+toif27+CP/ALFapQ47jVw\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "PendingForRepairAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"pending_for_repair\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"pending_for_repair\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "RepairCompletedAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"repair_completed\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"repair_completed\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "JobAssignedToEngineerAPiRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/engineer/myjobs",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"engineer",
+						"myjobs"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/engineer/myjobs' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "MasterAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/master",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"master"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/master' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "RepairCompleteAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{engToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"job_id\": {{jobId}},\r\n    \"problems\": [\r\n        {\r\n            \"id\": 1,\r\n            \"remark\": \"Reinstalled OS\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/engineer/repaircomplete",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"engineer",
+						"repaircomplete"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/engineer/repaircomplete' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik1hcmsiLCJsYXN0X25hbWUiOiJ6dWsiLCJsb2dpbl9pZCI6ImlhbWVuZyIsIm1vYmlsZV9udW1iZXIiOiI4ODk5Nzc2NjU1IiwiZW1haWxfaWQiOiJtYXJrQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiNWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTkiLCJyZXNldF9wYXNzd29yZF9kYXRlIjpudWxsLCJsb2NrX3N0YXR1cyI6MCwiaXNfYWN0aXZlIjoxLCJtc3Rfcm9sZV9pZCI6MSwibXN0X3NlcnZpY2VfbG9jYXRpb25faWQiOjEsImNyZWF0ZWRfYXQiOiIyMDIxLTExLTAzVDA4OjA2OjIzLjAwMFoiLCJtb2RpZmllZF9hdCI6IjIwMjEtMTItMjBUMDc6NDI6MDAuMDAwWiIsInJvbGVfbmFtZSI6IkVuZ2luZWVyIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODExODl9.S0F2pVMxZACg4nA1XSjWPWU995jFWX48klO5raSlMXc' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"job_id\":90897,\"problems\":[{\"id\":1,\"remark\":\"Reinstalled OS\"}]}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAPIRequestForQC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre-request\")"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Post-request\")\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"qcToken\", responseBody.data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"iamqc\",\"password\":\"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/login' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"username\":\"iamqc\",\"password\":\"password\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "UserDetailsAPIRequestForQC",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/userdetails",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/userdetails' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1b9-gwZ3q4NUFVwjUwUa8wJaXTtaK9Q\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForQC",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"a3-bhYIsK9xcC2pBvAmjE1O+Y93mW8\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "PendingForQCAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"pending_for_qc\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"pending_for_qc\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "QCCompletedAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"qc_completed\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"qc_completed\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "QCJobListAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/qc",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"qc"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/qc' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CompleteQCForJobAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"job_id\":{{jobId}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/qc",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"qc"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/qc' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"job_id\":90897}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "QCJobListAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{qcToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/qc",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"qc"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/qc' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RfbmFtZSI6InFjIiwibGFzdF9uYW1lIjoicWMiLCJsb2dpbl9pZCI6ImlhbXFjIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo0LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiUUMiLCJzZXJ2aWNlX2xvY2F0aW9uIjoiU2VydmljZSBDZW50ZXIgQSIsImlhdCI6MTc2MTM4MTc4N30.Vl8G0wyy4S5JakBc0-zW-OEBBadi_iIDdCal6yB03bs' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAPIRequestForFrontDesk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Post-request\")\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"pm.collectionVariables.set(\"fdToken\", responseBody.data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre-request\")"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"iamfd\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserDetailsAPIRequestForFrontDesk",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/userdetails",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"userdetails"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/userdetails' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"1b6-cR2dclq1S8zJDBAsHCDA10lTBi4\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "CountAPIRequestForFrontDesk",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/count",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"count"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/count' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzNzY5NzZ9.nZkJH1LJYc7ULk8-GLwoGjoqcdm3M9dK6tUeF1ShShM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"f3-gScWGbDNprcNEyK+JPUVxA/cU4M\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "PendingForDeliveryAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"details_key\":\"pending_for_delivery\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/dashboard/details",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"dashboard",
+						"details"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/dashboard/details' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"details_key\":\"pending_for_delivery\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "ReadyForDeliveryJobsAPIRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/fd/readyfordelivery",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"fd",
+						"readyfordelivery"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/fd/readyfordelivery' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'If-None-Match: W/\"2a5b-xfBT7rrZKsg8TAjY/dVU9Y8Es3I\"' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "DeliverToCustomerAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"job_id\":{{jobId}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/fd/delivertocustomer",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"fd",
+						"delivertocustomer"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/fd/delivertocustomer' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"job_id\":90897}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "SearchJobDetailsAPIRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"searchText\":\"{{jobNumber}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/job/search",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"search"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/search' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --data-raw '{\"searchText\":\"JOB_90897\"}' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "JobDetailsAPIRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if the status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/details/JOB_90897",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"details",
+						"JOB_90897"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/details/JOB_90897' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "JobDetailsAPIRequest Negative Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if the status code is 401\", function() {\r",
+							"    pm.response.to.have.status(401)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{fdToken}}",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/details/JOB_90897",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"details",
+						"JOB_90897"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/details/JOB_90897' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		},
+		{
+			"name": "JobDetailsAPIRequest Invalid Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if the status code is 403\", function() {\r",
+							"    pm.response.to.have.status(403)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Thiesnnh"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/job/details/JOB_90897",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"job",
+						"details",
+						"JOB_90897"
+					]
+				},
+				"description": "Generated from cURL: curl 'http://64.227.160.186:9000/v1/job/details/JOB_90897' \\\r\n  -X 'POST' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZmlyc3RfbmFtZSI6ImZkIiwibGFzdF9uYW1lIjoiZmQiLCJsb2dpbl9pZCI6ImlhbWZkIiwibW9iaWxlX251bWJlciI6Ijg4OTk3NzY2NTUiLCJlbWFpbF9pZCI6Im1hcmtAZ21haWwuY29tIiwicGFzc3dvcmQiOiI1ZjRkY2MzYjVhYTc2NWQ2MWQ4MzI3ZGViODgyY2Y5OSIsInJlc2V0X3Bhc3N3b3JkX2RhdGUiOm51bGwsImxvY2tfc3RhdHVzIjowLCJpc19hY3RpdmUiOjEsIm1zdF9yb2xlX2lkIjo1LCJtc3Rfc2VydmljZV9sb2NhdGlvbl9pZCI6MSwiY3JlYXRlZF9hdCI6IjIwMjEtMTEtMDNUMDg6MDY6MjMuMDAwWiIsIm1vZGlmaWVkX2F0IjoiMjAyMS0xMS0wM1QwODowNjoyMy4wMDBaIiwicm9sZV9uYW1lIjoiRnJvbnREZXNrIiwic2VydmljZV9sb2NhdGlvbiI6IlNlcnZpY2UgQ2VudGVyIEEiLCJpYXQiOjE3NjEzODIyMjF9.DK8akMnWXi1KBg7nRQgbgpVtKCN8j8_mZ_rXsd6_ABM' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Length: 0' \\\r\n  -H 'Content-Type: text/plain' \\\r\n  -H 'Origin: http://phoenix.techwithjatin.com' \\\r\n  -H 'Referer: http://phoenix.techwithjatin.com/' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \\\r\n  --insecure"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "fdToken",
+			"value": ""
+		},
+		{
+			"key": "jobId",
+			"value": ""
+		},
+		{
+			"key": "jobNumber",
+			"value": ""
+		},
+		{
+			"key": "supToken",
+			"value": ""
+		},
+		{
+			"key": "engToken",
+			"value": ""
+		},
+		{
+			"key": "qcToken",
+			"value": ""
+		},
+		{
+			"key": "fdToken_1",
+			"value": ""
+		},
+		{
+			"key": "engId",
+			"value": ""
+		}
+	]
+}
