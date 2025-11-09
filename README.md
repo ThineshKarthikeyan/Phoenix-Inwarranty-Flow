@@ -8,7 +8,7 @@ The latest report is mailed to the team members using GMAIL SMTP.
 
 ## About me ##
 Hi, My name is Thinesh Kumaar. I have 6+ years of experience in Automation testing. My Skillsets includes UI Automation with Selenium Webdriver and cypress and for API testing Karate and Rest Assured. You can connect with me
-over: (linkedin.com/in/thinesh-kumaar-536210282)
+over: https://www.linkedin.com/in/thinesh-kumaar
 
 
 
